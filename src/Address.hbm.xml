@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+    <class name="entity.Address" table="address">
+        <meta attribute="class-description">
+            This class contains the address detail. 
+        </meta>
+        <id name="id" type="long">
+            <generator class="native"/>
+        </id>
+        <property name="country" type="string"/>
+        <property name="uf" type="string"/>
+        <property name="city" type="string"/>
+        <property name="street" type="string"/>
+        <property name="number" type="integer"/>
+        <property name="createdAt" column="created_at" type="date"/>
+        <property name="updatedAt" column="updated_at" type="date"/>
+        <property name="active" type="boolean"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+    <class name="entity.Medic" table="medic">
+        <meta attribute="class-description">
+            This class contains the medic detail. 
+        </meta>
+        <id name="id" type="long">
+            <generator class="native"/>
+        </id>
+        <set name="patients" table="patient" inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="medic_id" not-null="true" />
+            </key>
+            <one-to-many class="entity.Patient" />
+        </set>
+        <many-to-one name="institution" class="entity.Institution" column="institution_id" lazy="false"/>
+        <property name="name" type="string"/>  
+        <property name="email" type="string"/>  
+        <property name="phone" type="string"/>  
+        <property name="city" type="string"/>  
+        <property name="createdAt" column="created_at" type="date"/>
+        <property name="updatedAt" column="updated_at" type="date"/>
+        <property name="active" type="boolean"/>
+    </class>
+</hibernate-mapping>
