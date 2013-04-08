@@ -2,6 +2,13 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+        
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+        
+        <property name="hibernate.current_session_context_class">thread</property>
+        
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sceid_java?zeroDateTimeBehavior=convertToNull</property>
@@ -9,9 +16,13 @@
         <property name="hibernate.connection.password">password</property>
         <mapping resource="Patient.hbm.xml"/>
         <mapping resource="Medic.hbm.xml"/>
-        <mapping resource="Clinical.hbm.xml"/>
+        <mapping resource="ClinicalExam.hbm.xml"/>
+        <mapping resource="DiagnosticExam.hbm.xml"/>
         <mapping resource="Institution.hbm.xml"/>
+        <mapping resource="PostOperatoryEndoscopy.hbm.xml"/>
+        <mapping resource="PostOperatoryAvaliation.hbm.xml"/>
         <mapping resource="Address.hbm.xml"/>
+        <mapping resource="Avatar.hbm.xml"/>
         <event type="save-update">
             <listener class="event.SaveOrUpdateDateListener"/>
         </event>

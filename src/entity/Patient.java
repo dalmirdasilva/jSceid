@@ -1,39 +1,54 @@
 package entity;
 
+import entity.nonpersistable.Gender;
 import event.SaveOrUpdateListener;
 import java.util.Date;
+import java.util.Set;
 
 public class Patient implements SaveOrUpdateListener {
 
     private long id;
     private Medic medic;
-    private String name;
-    private int same;
-    private int age;
-    private boolean sex;
-    private String color;
-    private String profession;
-    private String address;
-    private String city;
-    private String bornCity;
-    private String phone;
+    private Set<ClinicalExam> clinicalExams;
+    private Set<DiagnosticExam> diagnosticExams;
+    private Set<PostOperatoryEndoscopy> postOperatoryEndoscopies;
+    private Address address;
+    private Avatar avatar;
+    private String name = "";
+    private int same = 0;
+    private int age = 0;
+    private Gender gender = Gender.MALE;
+    private String color = "";
+    private String profession = "";
+    private String bornCity = "";
+    private String phone = "";
     private Date updatedAt;
     private Date createdAt;
-    private boolean active;
+    private boolean active = true;
 
     public Patient() {
     }
 
-    public Patient(Medic medic, String name, int same, int age, boolean sex, String color, String profession, String address, String city, String bornCity, String phone, boolean active) {
+    public Patient(String name, Address address, Avatar avatar) {
+        this.avatar = avatar;
+        this.name = name;
+        this.address = address;
+    }
+
+    public Patient(Medic medic, String name, Address address, Avatar avatar) {
+        this(name, address, avatar);
+        this.medic = medic;
+    }
+
+    public Patient(Medic medic, String name, Address address, Avatar avatar, int same, int age, Gender gender, String color, String profession, String bornCity, String phone, boolean active) {
         this.medic = medic;
         this.name = name;
         this.same = same;
         this.age = age;
-        this.sex = sex;
+        this.gender = gender;
         this.color = color;
         this.profession = profession;
         this.address = address;
-        this.city = city;
         this.bornCity = bornCity;
         this.phone = phone;
         this.active = active;
@@ -65,6 +80,51 @@ public class Patient implements SaveOrUpdateListener {
      */
     public void setMedic(Medic medic) {
         this.medic = medic;
+    }
+
+    public Set<ClinicalExam> getClinicalExams() {
+        return clinicalExams;
+    }
+
+    public void updateClinicalExams(Set<ClinicalExam> clinicalExams) {
+        if (this.clinicalExams != null) {
+            this.clinicalExams.clear();
+            this.clinicalExams.addAll(clinicalExams);
+        }
+    }
+
+    public void setClinicalExams(Set<ClinicalExam> clinicalExams) {
+        this.clinicalExams = clinicalExams;
+    }
+
+    public Set<DiagnosticExam> getDiagnosticExams() {
+        return diagnosticExams;
+    }
+
+    public void updateDiagnosticExams(Set<DiagnosticExam> diagnosticExams) {
+        if (this.diagnosticExams != null) {
+            this.diagnosticExams.clear();
+            this.diagnosticExams.addAll(diagnosticExams);
+        }
+    }
+
+    public void setPostOperatoryEndoscopies(Set<PostOperatoryEndoscopy> postOperatoryEndoscopies) {
+        this.postOperatoryEndoscopies = postOperatoryEndoscopies;
+    }
+
+    public Set<PostOperatoryEndoscopy> getPostOperatoryEndoscopies() {
+        return postOperatoryEndoscopies;
+    }
+
+    public void updatePostOperatoryEndoscopies(Set<PostOperatoryEndoscopy> postOperatoryEndoscopies) {
+        if (this.postOperatoryEndoscopies != null) {
+            this.postOperatoryEndoscopies.clear();
+            this.postOperatoryEndoscopies.addAll(postOperatoryEndoscopies);
+        }
+    }
+
+    public void setDiagnosticExams(Set<DiagnosticExam> diagnosticExams) {
+        this.diagnosticExams = diagnosticExams;
     }
 
     /**
@@ -109,18 +169,12 @@ public class Patient implements SaveOrUpdateListener {
         this.age = age;
     }
 
-    /**
-     * @return the sex
-     */
-    public boolean isSex() {
-        return sex;
+    public Gender isGender() {
+        return gender;
     }
 
-    /**
-     * @param sex the sex to set
-     */
-    public void setSex(boolean sex) {
-        this.sex = sex;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     /**
@@ -154,29 +208,23 @@ public class Patient implements SaveOrUpdateListener {
     /**
      * @return the address
      */
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
     /**
      * @param address the address to set
      */
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
-    /**
-     * @return the city
-     */
-    public String getCity() {
-        return city;
+    public Avatar getAvatar() {
+        return avatar;
     }
 
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     /**
@@ -250,11 +298,36 @@ public class Patient implements SaveOrUpdateListener {
     }
 
     @Override
+    public String toString() {
+        return "{name: " + name + ", same: " + same + ", gender: " + gender + ", medic: " + medic + ", phone: " + phone + "}";
+    }
+
+    @Override
     public void onCreate() {
-        createdAt = new Date();
+        this.createdAt = new Date();
+        adoptChildren();
     }
 
     @Override
     public void onUpdate() {
+        adoptChildren();
+    }
+
+    private void adoptChildren() {
+        if (clinicalExams != null) {
+            for (ClinicalExam o : getClinicalExams()) {
+                o.setPatient(this);
+            }
+        }
+        if (diagnosticExams != null) {
+            for (DiagnosticExam o : getDiagnosticExams()) {
+                o.setPatient(this);
+            }
+        }
+        if (postOperatoryEndoscopies != null) {
+            for (PostOperatoryEndoscopy o : getPostOperatoryEndoscopies()) {
+                o.setPatient(this);
+            }
+        }
     }
 }

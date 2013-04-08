@@ -1,34 +1,33 @@
-
 package entity;
 
 import event.SaveOrUpdateListener;
 import java.util.Date;
 
-public class Clinical implements SaveOrUpdateListener {
+public class ClinicalExam implements SaveOrUpdateListener {
 
     private long id;
-    private long patientId;
-    private boolean bloating;
-    private boolean epigastricPain;
-    private boolean slimming;
-    private String palpableLymphonodes;
-    private boolean anorexia;
-    private boolean gastrointestinalBleeding;
-    private String palpableMass;
-    private boolean vomiting;
-    private boolean hepatomegaly;
-    private String rectalExamination;
-    private boolean ascite;
-    private boolean anemia;
+    private Patient patient;
+    private boolean bloating = false;
+    private boolean epigastricPain = false;
+    private boolean slimming = false;
+    private String palpableLymphonodes = "0";
+    private boolean anorexia = false;
+    private boolean gastrointestinalBleeding = false;
+    private String palpableMass = "0";
+    private boolean vomiting = false;
+    private boolean hepatomegaly = false;
+    private String rectalExamination = "0";
+    private boolean ascite = false;
+    private boolean anemia = false;
     private Date updatedAt;
     private Date createdAt;
-    private boolean active;
+    private boolean active = true;
 
-    public Clinical() {
+    public ClinicalExam() {
     }
 
-    public Clinical(long patientId, boolean bloating, boolean epigastricPain, boolean slimming, String palpableLymphonodes, boolean anorexia, boolean gastrointestinalBleeding, String palpableMass, boolean vomiting, boolean hepatomegaly, String rectalExamination, boolean ascite, boolean anemia, boolean active) {
-        this.patientId = patientId;
+    public ClinicalExam(Patient patient, boolean bloating, boolean epigastricPain, boolean slimming, String palpableLymphonodes, boolean anorexia, boolean gastrointestinalBleeding, String palpableMass, boolean vomiting, boolean hepatomegaly, String rectalExamination, boolean ascite, boolean anemia, boolean active) {
+        this.patient = patient;
         this.bloating = bloating;
         this.epigastricPain = epigastricPain;
         this.slimming = slimming;
@@ -52,12 +51,12 @@ public class Clinical implements SaveOrUpdateListener {
         this.id = id;
     }
 
-    public long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public boolean isBloating() {
@@ -179,7 +178,12 @@ public class Clinical implements SaveOrUpdateListener {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
+    @Override
+    public String toString() {
+        return "{patient: " + patient + ", bloating: " + bloating + ", epigastricPain: " + epigastricPain + ", slimming: " + slimming + ", palpableLymphonodes: " + palpableLymphonodes + "}";
+    }
+
     @Override
     public void onCreate() {
         createdAt = new Date();
@@ -189,4 +193,3 @@ public class Clinical implements SaveOrUpdateListener {
     public void onUpdate() {
     }
 }
-

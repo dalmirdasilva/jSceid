@@ -4,14 +4,14 @@
  "http://localhost/hibernate-mapping-3.0.dtd"> 
 
 <hibernate-mapping>
-    <class name="entity.Clinical" table="clinical">
+    <class name="entity.ClinicalExam" table="clinical_exam">
         <meta attribute="class-description">
-            This class contains the linical detail. 
+            This class contains the clinical exam details. 
         </meta>
         <id name="id" type="long">
             <generator class="native"/>
         </id>
-        <property name="patientId" column="patient_id" type="long"/>  
+        <many-to-one name="patient" class="entity.Patient" column="patient_id" lazy="false" cascade="all"/>
         <property name="bloating" type="boolean"/>  
         <property name="epigastricPain" column="epigastric_pain" type="boolean"/>
         <property name="slimming" type="boolean"/>

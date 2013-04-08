@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://localhost/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+    <class name="entity.ClinicalExam" table="clinical_exam">
+        <meta attribute="class-description">
+            This class contains the clinical exam details. 
+        </meta>
+        <id name="id" type="long">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="patient" class="entity.Patient" column="patient_id" lazy="false" cascade="all"/>
+        <property name="bloating" type="boolean"/>  
+        <property name="epigastricPain" column="epigastric_pain" type="boolean"/>
+        <property name="slimming" type="boolean"/>
+        <property name="palpableLymphonodes" column="palpable_lymphonodes"  type="string"/>
+        <property name="anorexia" type="boolean"/>
+        <property name="gastrointestinalBleeding" column="gastrointestinal_bleeding" type="boolean"/>
+        <property name="palpableMass" column="palpable_mass" type="string"/>
+        <property name="vomiting" type="boolean"/>
+        <property name="hepatomegaly" type="boolean"/>
+        <property name="rectalExamination" column="rectal_examination" type="string"/>
+        <property name="ascite" type="boolean"/>
+        <property name="anemia" type="boolean"/>
+        <property name="createdAt" column="created_at" type="date"/>
+        <property name="updatedAt" column="updated_at" type="date"/>
+        <property name="active" type="boolean"/>
+    </class>
+</hibernate-mapping>

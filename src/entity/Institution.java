@@ -9,20 +9,27 @@ public class Institution implements SaveOrUpdateListener {
     private long id;
     private Set<Medic> medics;
     private Address address;
-    private String name;
-    private String email;
-    private String phone;
+    private Avatar avatar;
+    private String name = "";
+    private String webPage = "";
+    private String phone = "";
     private Date updatedAt;
     private Date createdAt;
-    private boolean active;
+    private boolean active = true;
 
     public Institution() {
     }
+    
+    public Institution(Address address, Avatar avatar) {
+        this.address = address;
+        this.avatar = avatar;
+    }
 
-    public Institution(Address adrress, String name, String email, String phone) {
-        this.address = adrress;
+    public Institution(Address address, Avatar avatar, String name, String webPage, String phone) {
+        this.address = address;
+        this.avatar = avatar;
         this.name = name;
-        this.email = email;
+        this.webPage = webPage;
         this.phone = phone;
     }
 
@@ -50,6 +57,14 @@ public class Institution implements SaveOrUpdateListener {
         this.address = address;
     }
 
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
     public String getName() {
         return name;
     }
@@ -58,12 +73,12 @@ public class Institution implements SaveOrUpdateListener {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getWebPage() {
+        return webPage;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setWebPage(String webPage) {
+        this.webPage = webPage;
     }
 
     public String getPhone() {
@@ -99,11 +114,26 @@ public class Institution implements SaveOrUpdateListener {
     }
 
     @Override
+    public String toString() {
+        return "{name: " + name + ", web_page: " + webPage + ", phone: " + phone + ", address: " + address + "}";
+    }
+
+    @Override
     public void onCreate() {
-        createdAt = new Date();
+        this.createdAt = new Date();
+        adoptChildren();
     }
 
     @Override
     public void onUpdate() {
+        adoptChildren();
+    }
+
+    private void adoptChildren() {
+        if (medics != null) {
+            for (Medic m : getMedics()) {
+                m.setInstitution(this);
+            }
+        }
     }
 }

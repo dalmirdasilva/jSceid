@@ -11,15 +11,16 @@
         <id name="id" type="long">
             <generator class="native"/>
         </id>
-        <set name="medics" table="medic" inverse="true" lazy="true" fetch="select">
+        <set name="medics" table="medic" inverse="true" lazy="true" fetch="join" cascade="all-delete-orphan">
             <key>
                 <column name="institution_id" not-null="true" />
             </key>
             <one-to-many class="entity.Medic" />
         </set>
         <many-to-one name="address" class="entity.Address" column="address_id" lazy="false" cascade="all"/>
+        <many-to-one name="avatar" class="entity.Avatar" column="avatar_id" lazy="false" cascade="all"/>
         <property name="name" type="string"/>  
-        <property name="email" type="string"/>  
+        <property name="webPage" column="web_page" type="string"/>  
         <property name="phone" type="string"/>  
         <property name="createdAt" column="created_at" type="date"/>
         <property name="updatedAt" column="updated_at" type="date"/>

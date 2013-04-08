@@ -4,7 +4,7 @@
  */
 package dao;
 
-import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 
 /**
  *
@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
  */
 public abstract class DAOFactory {
     
-    public abstract void setSessionFactory(SessionFactory sessionFactory);
+    public abstract void setSession(Session session);
 
     public abstract GenericDAO getNewDAO(Class daoClass);
 }

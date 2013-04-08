@@ -6,14 +6,14 @@ import java.util.Date;
 public class Address implements SaveOrUpdateListener {
 
     private long id;
-    private String country;
-    private String uf;
-    private String city;
-    private String street;
+    private String country = "";
+    private String uf = "";
+    private String city = "";
+    private String street = "";
     private int number;
     private Date updatedAt;
     private Date createdAt;
-    private boolean active;
+    private boolean active = true;
 
     public Address() {
     }
@@ -96,6 +96,11 @@ public class Address implements SaveOrUpdateListener {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "{country: " + country + ", uf: " + uf + ", city: " + city + ", street: " + street + ", number: " + number + "}";
     }
 
     @Override

@@ -9,10 +9,11 @@ public class Medic implements SaveOrUpdateListener {
     private long id;
     private Institution institution;
     private Set<Patient> patients;
-    private String name;
-    private String phone;
-    private String email;
-    private String city;
+    private Address address;
+    private Avatar avatar;
+    private String name = "";
+    private String phone = "";
+    private String email = "";
     private Date updatedAt;
     private Date createdAt;
     private boolean active;
@@ -20,12 +21,17 @@ public class Medic implements SaveOrUpdateListener {
     public Medic() {
     }
 
-    public Medic(Institution institution, String name, String phone, String email, String city, boolean active) {
+    public Medic(Institution institution, Address address) {
+        this.institution = institution;
+        this.address = address;
+    }
+
+    public Medic(Institution institution, Address address, String name, String phone, String email, boolean active) {
+        this.address = address;
         this.institution = institution;
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.city = city;
         this.active = active;
     }
 
@@ -48,11 +54,34 @@ public class Medic implements SaveOrUpdateListener {
     public Set<Patient> getPatients() {
         return patients;
     }
-    
+
+    public void updatePatients(Set<Patient> patients) {
+        if (this.patients != null) {
+            this.patients.clear();
+            this.patients.addAll(patients);
+        }
+    }
+
     public void setPatients(Set<Patient> patients) {
         this.patients = patients;
     }
-    
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
     public String getName() {
         return name;
     }
@@ -75,14 +104,6 @@ public class Medic implements SaveOrUpdateListener {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public Date getUpdatedAt() {
@@ -110,11 +131,26 @@ public class Medic implements SaveOrUpdateListener {
     }
 
     @Override
+    public String toString() {
+        return "{name: " + name + ", phone: " + phone + ", email: " + email + ", institution: " + institution + "}";
+    }
+
+    @Override
     public void onCreate() {
         this.createdAt = new Date();
+        adoptChildren();
     }
 
     @Override
     public void onUpdate() {
+        adoptChildren();
+    }
+
+    private void adoptChildren() {
+        if (patients != null) {
+            for (Patient o : getPatients()) {
+                o.setMedic(this);
+            }
+        }
     }
 }

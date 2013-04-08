@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://localhost/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+    <class name="entity.DiagnosticExam" table="diagnostic_exam">
+        <meta attribute="class-description">
+            This class contains the diagnostic exam details. 
+        </meta>
+        <id name="id" type="long">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="patient" class="entity.Patient" column="patient_id" lazy="false" cascade="all"/>
+        <property name="digestiveEndoscopy" column="digestive_endoscopy" type="string"/>
+        <property name="endoscopyDate" column="endoscopy_date" type="date"/>
+        <property name="laurenClassification" column="lauren_classification" not-null="true">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">entity.nonpersistable.LaurenClassification</param>
+            </type> 
+        </property>        
+        <property name="biopsiesCount" column="biopsies_count" type="int"/>
+        <property name="xRayEED" column="xray_EED" type="string"/>
+        <property name="xRayDate" column="xray_date" type="date"/>
+        <property name="CA724" type="string"/>
+        <property name="CEA" type="string"/>
+        <property name="CA199" type="string"/>
+        <property name="createdAt" column="created_at" type="date"/>
+        <property name="updatedAt" column="updated_at" type="date"/>
+        <property name="active" type="boolean"/>
+    </class>
+</hibernate-mapping>
