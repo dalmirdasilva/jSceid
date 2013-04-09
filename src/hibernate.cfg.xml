@@ -14,15 +14,7 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sceid_java?zeroDateTimeBehavior=convertToNull</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">password</property>
-        <mapping resource="Patient.hbm.xml"/>
-        <mapping resource="Medic.hbm.xml"/>
-        <mapping resource="ClinicalExam.hbm.xml"/>
-        <mapping resource="DiagnosticExam.hbm.xml"/>
-        <mapping resource="Institution.hbm.xml"/>
-        <mapping resource="PostOperatoryEndoscopy.hbm.xml"/>
-        <mapping resource="PostOperatoryAvaliation.hbm.xml"/>
-        <mapping resource="Address.hbm.xml"/>
-        <mapping resource="Avatar.hbm.xml"/>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <event type="save-update">
             <listener class="event.SaveOrUpdateDateListener"/>
         </event>

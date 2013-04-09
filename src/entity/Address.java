@@ -1,24 +1,47 @@
 package entity;
 
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class Address implements SaveOrUpdateListener {
+@Entity
+@Table(name = "address")
+public class Address implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
-    private String country = "";
-    private String uf = "";
-    private String city = "";
-    private String street = "";
+    private String country;
+    private String uf;
+    private String city;    
+    private String street;
     private int number;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
-    private boolean active = true;
+    private boolean active;
 
     public Address() {
+        country = "";
+        uf = "";
+        city = "";
+        street = "";
+        number = 0;
+        active = true;
     }
 
     public Address(String country, String uf, String city, String street, int number) {
+        this();
         this.country = country;
         this.uf = uf;
         this.city = city;

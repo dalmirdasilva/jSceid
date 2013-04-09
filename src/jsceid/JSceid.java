@@ -20,14 +20,20 @@ import dao.hibernate.MedicHibernateDAO;
 import dao.hibernate.PatientHibernateDAO;
 import dao.hibernate.PostOperatoryAvaliationHibernateDAO;
 import dao.hibernate.PostOperatoryEndoscopyHibernateDAO;
+import entity.Address;
 import entity.Avatar;
-import java.io.File;
-import java.io.FileInputStream;
+import entity.ClinicalExam;
+import entity.DiagnosticExam;
+import entity.Institution;
+import entity.Medic;
+import entity.Patient;
+import entity.PostOperatoryAvaliation;
+import entity.PostOperatoryEndoscopy;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.swing.JFrame;
+import java.util.Date;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.classic.Session;
 
 public class JSceid {
@@ -38,7 +44,16 @@ public class JSceid {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         try {
-            Configuration c = new Configuration();
+            AnnotationConfiguration c = new AnnotationConfiguration();
+            c.addAnnotatedClass(Institution.class);
+            c.addAnnotatedClass(Medic.class);
+            c.addAnnotatedClass(Patient.class);
+            c.addAnnotatedClass(Address.class);
+            c.addAnnotatedClass(Avatar.class);
+            c.addAnnotatedClass(PostOperatoryEndoscopy.class);
+            c.addAnnotatedClass(PostOperatoryAvaliation.class);
+            c.addAnnotatedClass(ClinicalExam.class);
+            c.addAnnotatedClass(DiagnosticExam.class);
             c.configure();
             sessionFactory = c.buildSessionFactory();
             session = sessionFactory.openSession();
@@ -60,12 +75,19 @@ public class JSceid {
         PostOperatoryEndoscopyDAO postOperatoryEndoscopyDAO = (PostOperatoryEndoscopyDAO) daoFactory.getNewDAO(PostOperatoryEndoscopyHibernateDAO.class);
         AvatarDAO avatarDAO = (AvatarDAO) daoFactory.getNewDAO(AvatarHibernateDAO.class);
 
+        postOperatoryAvaliationDAO.saveEntity(new PostOperatoryAvaliation(new Patient(new Medic(new Institution(new Address(), new Avatar()), new Address()), "", new Address(), new Avatar())));
+        
+        /*
+        avatarDAO.saveEntity(new Avatar());
+        avatarDAO.saveEntity(new Avatar());
+        avatarDAO.saveEntity(new Avatar());
+        avatarDAO.saveEntity(new Avatar());
         
         Avatar a = avatarDAO.findById((long) 2, true);
         
         ImageViewer frame = new ImageViewer();
         frame.abc(a.getImage());
-        frame.show();
+        frame.setVisible(true);
 
         
         /*

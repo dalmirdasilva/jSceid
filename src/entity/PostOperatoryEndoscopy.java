@@ -1,29 +1,52 @@
 package entity;
 
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class PostOperatoryEndoscopy implements SaveOrUpdateListener {
+@Entity
+@Table(name = "post_operatory_endoscopy")
+public class PostOperatoryEndoscopy implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Patient patient;
-    private String description = "";
-    private Date date;
+    private String description;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "endoscopy_date")
+    private Date endoscopyDate;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
     private boolean active = true;
 
     public PostOperatoryEndoscopy() {
+        description = "";
     }
 
-    public PostOperatoryEndoscopy(Date date) {
-        this.date = date;
+    public PostOperatoryEndoscopy(Date endoscopyDate) {
+        this();
+        this.endoscopyDate = endoscopyDate;
     }
 
-    public PostOperatoryEndoscopy(Patient patient, String description, Date date) {
+    public PostOperatoryEndoscopy(Patient patient, String description, Date endoscopyDate) {
+        this(endoscopyDate);
         this.patient = patient;
         this.description = description;
-        this.date = date;
     }
 
     public long getId() {
@@ -50,12 +73,12 @@ public class PostOperatoryEndoscopy implements SaveOrUpdateListener {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getEndoscopyDate() {
+        return endoscopyDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setEndoscopyDate(Date endoscopyDate) {
+        this.endoscopyDate = endoscopyDate;
     }
 
     public Date getUpdatedAt() {
@@ -84,7 +107,7 @@ public class PostOperatoryEndoscopy implements SaveOrUpdateListener {
 
     @Override
     public String toString() {
-        return "{patient: " + patient + ", description: " + description + ", date: " + date + "}";
+        return "{patient: " + patient + ", description: " + description + ", date: " + endoscopyDate + "}";
     }
 
     @Override

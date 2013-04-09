@@ -1,33 +1,60 @@
 package entity;
 
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class Institution implements SaveOrUpdateListener {
+@Entity
+@Table(name = "institution")
+public class Institution implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "institution")
     private Set<Medic> medics;
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    @OneToOne(cascade = CascadeType.ALL)
     private Avatar avatar;
-    private String name = "";
-    private String webPage = "";
-    private String phone = "";
+    private String name;
+    @Column(name = "web_page")
+    private String webPage;
+    private String phone;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
-    private boolean active = true;
+    private boolean active;
 
     public Institution() {
+        name = "";
+        webPage = "";
+        phone = "";
+        active = true;
     }
-    
+
     public Institution(Address address, Avatar avatar) {
+        this();
         this.address = address;
         this.avatar = avatar;
     }
 
     public Institution(Address address, Avatar avatar, String name, String webPage, String phone) {
-        this.address = address;
-        this.avatar = avatar;
+        this(address, avatar);
         this.name = name;
         this.webPage = webPage;
         this.phone = phone;

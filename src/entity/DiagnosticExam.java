@@ -2,31 +2,73 @@ package entity;
 
 import entity.nonpersistable.LaurenClassification;
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class DiagnosticExam implements SaveOrUpdateListener {
+@Entity
+@Table(name = "diagnostic_exam")
+public class DiagnosticExam implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Patient patient;
-    private String digestiveEndoscopy = "";
+    @Column(name = "digestive_endoscopy")
+    private String digestiveEndoscopy;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "endoscopy_date")
     private Date endoscopyDate;
-    private LaurenClassification laurenClassification = LaurenClassification.DIFFUSE;
-    private int biopsiesCount = 0;
-    private String xRayEED = "";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "lauren_classification")
+    private LaurenClassification laurenClassification;
+    @Column(name = "biopsies_count")
+    private int biopsiesCount;
+    @Column(name = "xray_eed")
+    private String xRayEED;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "xray_date")
     private Date xRayDate;
-    private String CA724 = "";
-    private String CEA = "";
-    private String CA199 = "";
+    private String CA724;
+    private String CEA;
+    private String CA199;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
-    private boolean active = true;
+    private boolean active;
+
+    public DiagnosticExam() {
+        digestiveEndoscopy = "";
+        laurenClassification = LaurenClassification.DIFFUSE;
+        biopsiesCount = 0;
+        xRayEED = "";
+        CA724 = "";
+        CEA = "";
+        CA199 = "";
+        active = true;
+    }
 
     public DiagnosticExam(Patient patient) {
+        this();
         this.patient = patient;
     }
 
-    public DiagnosticExam(Patient patient, String digestiveEndoscopy, Date endoscopyDate, LaurenClassification laurenClassification, int biopsiesCount, String xRayEED, Date xRayDate, String CA724, String CEA, String CA199, Date updatedAt, Date createdAt, boolean active) {
-        this.patient = patient;
+    public DiagnosticExam(Patient patient, String digestiveEndoscopy, Date endoscopyDate, LaurenClassification laurenClassification, int biopsiesCount, String xRayEED, Date xRayDate, String CA724, String CEA, String CA199, Date updatedAt, Date createdAt) {
+        this(patient);
         this.digestiveEndoscopy = digestiveEndoscopy;
         this.endoscopyDate = endoscopyDate;
         this.laurenClassification = laurenClassification;
@@ -38,10 +80,6 @@ public class DiagnosticExam implements SaveOrUpdateListener {
         this.CA199 = CA199;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
-        this.active = active;
-    }
-
-    public DiagnosticExam() {
     }
 
     public long getId() {

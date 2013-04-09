@@ -1,33 +1,75 @@
 package entity;
 
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class ClinicalExam implements SaveOrUpdateListener {
+@Entity
+@Table(name = "clinical_exam")
+public class ClinicalExam implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Patient patient;
-    private boolean bloating = false;
-    private boolean epigastricPain = false;
-    private boolean slimming = false;
-    private String palpableLymphonodes = "0";
-    private boolean anorexia = false;
-    private boolean gastrointestinalBleeding = false;
-    private String palpableMass = "0";
-    private boolean vomiting = false;
-    private boolean hepatomegaly = false;
-    private String rectalExamination = "0";
-    private boolean ascite = false;
-    private boolean anemia = false;
+    private boolean bloating;
+    @Column(name = "epigastric_pain")
+    private boolean epigastricPain;
+    private boolean slimming;
+    @Column(name = "palpable_lymphonodes")
+    private String palpableLymphonodes;
+    private boolean anorexia;
+    @Column(name = "gastrointestinal_bleeding")
+    private boolean gastrointestinalBleeding;
+    @Column(name = "palpable_mass")
+    private String palpableMass;
+    private boolean vomiting;
+    private boolean hepatomegaly;
+    @Column(name = "rectal_examination")
+    private String rectalExamination;
+    private boolean ascite;
+    private boolean anemia;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
-    private boolean active = true;
+    private boolean active;
 
     public ClinicalExam() {
+        bloating = false;
+        epigastricPain = false;
+        slimming = false;
+        palpableLymphonodes = "0";
+        anorexia = false;
+        gastrointestinalBleeding = false;
+        palpableMass = "0";
+        vomiting = false;
+        hepatomegaly = false;
+        rectalExamination = "0";
+        ascite = false;
+        anemia = false;
+        active = true;
     }
 
-    public ClinicalExam(Patient patient, boolean bloating, boolean epigastricPain, boolean slimming, String palpableLymphonodes, boolean anorexia, boolean gastrointestinalBleeding, String palpableMass, boolean vomiting, boolean hepatomegaly, String rectalExamination, boolean ascite, boolean anemia, boolean active) {
+    public ClinicalExam(Patient patient) {
+        this();
         this.patient = patient;
+    }
+
+    public ClinicalExam(Patient patient, boolean bloating, boolean epigastricPain, boolean slimming, String palpableLymphonodes, boolean anorexia, boolean gastrointestinalBleeding, String palpableMass, boolean vomiting, boolean hepatomegaly, String rectalExamination, boolean ascite, boolean anemia) {
+        this(patient);
         this.bloating = bloating;
         this.epigastricPain = epigastricPain;
         this.slimming = slimming;
@@ -40,7 +82,6 @@ public class ClinicalExam implements SaveOrUpdateListener {
         this.rectalExamination = rectalExamination;
         this.ascite = ascite;
         this.anemia = anemia;
-        this.active = active;
     }
 
     public long getId() {

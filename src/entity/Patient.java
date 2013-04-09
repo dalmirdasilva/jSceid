@@ -2,34 +2,74 @@ package entity;
 
 import entity.nonpersistable.Gender;
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class Patient implements SaveOrUpdateListener {
+@Entity
+@Table(name = "patient")
+public class Patient implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Medic medic;
-    private Set<ClinicalExam> clinicalExams;
-    private Set<DiagnosticExam> diagnosticExams;
-    private Set<PostOperatoryEndoscopy> postOperatoryEndoscopies;
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    @OneToOne(cascade = CascadeType.ALL)
     private Avatar avatar;
-    private String name = "";
-    private int same = 0;
-    private int age = 0;
-    private Gender gender = Gender.MALE;
-    private String color = "";
-    private String profession = "";
-    private String bornCity = "";
-    private String phone = "";
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
+    private Set<ClinicalExam> clinicalExams;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
+    private Set<DiagnosticExam> diagnosticExams;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
+    private Set<PostOperatoryEndoscopy> postOperatoryEndoscopies;
+    private String name;
+    private int same;
+    private int age;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    private String color;
+    private String profession;
+    @Column(name = "born_city")
+    private String bornCity;
+    private String phone;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
-    private boolean active = true;
+    private boolean active;
 
     public Patient() {
+        name = "";
+        same = 0;
+        age = 0;
+        gender = Gender.MALE;
+        color = "";
+        profession = "";
+        bornCity = "";
+        phone = "";
+        active = true;
     }
 
     public Patient(String name, Address address, Avatar avatar) {
+        this();
         this.avatar = avatar;
         this.name = name;
         this.address = address;
@@ -40,18 +80,15 @@ public class Patient implements SaveOrUpdateListener {
         this.medic = medic;
     }
 
-    public Patient(Medic medic, String name, Address address, Avatar avatar, int same, int age, Gender gender, String color, String profession, String bornCity, String phone, boolean active) {
-        this.medic = medic;
-        this.name = name;
+    public Patient(Medic medic, String name, Address address, Avatar avatar, int same, int age, Gender gender, String color, String profession, String bornCity, String phone) {
+        this(medic, name, address, avatar);
         this.same = same;
         this.age = age;
         this.gender = gender;
         this.color = color;
         this.profession = profession;
-        this.address = address;
         this.bornCity = bornCity;
         this.phone = phone;
-        this.active = active;
     }
 
     /**

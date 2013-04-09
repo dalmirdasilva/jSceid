@@ -4,38 +4,89 @@ import entity.nonpersistable.Consistency;
 import entity.nonpersistable.Intensity;
 import entity.nonpersistable.Periodicity;
 import event.SaveOrUpdateListener;
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-public class PostOperatoryAvaliation implements SaveOrUpdateListener {
+@Entity
+@Table(name = "post_operatory_avaliation")
+public class PostOperatoryAvaliation implements SaveOrUpdateListener, Serializable {
 
+    @Id
+    @GeneratedValue
     private long id;
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Patient patient;
-    private int numberOfMeals = 0;
-    private int timeBetweenMeals = 0;
-    private Consistency consistency = Consistency.NORMAL;
-    private Periodicity ingestionCapacity = Periodicity.NORMAL;
-    private Intensity appetite = Intensity.UNCHANGED;
-    private Intensity weight = Intensity.UNCHANGED;
-    private Periodicity dysphagia = Periodicity.NORMAL;
-    private Periodicity pyrosis = Periodicity.NORMAL;
-    private Periodicity diarrhea = Periodicity.NORMAL;
-    private Periodicity abdominalPain = Periodicity.NORMAL;
-    private Periodicity vomit = Periodicity.NORMAL;
-    private Periodicity fulness = Periodicity.NORMAL;
-    private Periodicity dumping = Periodicity.NORMAL;
-    private int totalScore = 0;
-    private String comments = "";
+    @Column(name = "time_of_meals")
+    private int numberOfMeals;
+    @Column(name = "time_between_meals")
+    private int timeBetweenMeals;
+    @Enumerated(EnumType.STRING)
+    private Consistency consistency;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ingestion_capacity")
+    private Periodicity ingestionCapacity;
+    @Enumerated(EnumType.STRING)
+    private Intensity appetite;
+    @Enumerated(EnumType.STRING)
+    private Intensity weight;
+    @Enumerated(EnumType.STRING)
+    private Periodicity dysphagia;
+    @Enumerated(EnumType.STRING)
+    private Periodicity pyrosis;
+    @Enumerated(EnumType.STRING)
+    private Periodicity diarrhea;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "abdominal_pain")
+    private Periodicity abdominalPain;
+    @Enumerated(EnumType.STRING)
+    private Periodicity vomit;
+    @Enumerated(EnumType.STRING)
+    private Periodicity fulness;
+    @Enumerated(EnumType.STRING)
+    private Periodicity dumping;
+    @Column(name = "total_score")
+    private int totalScore;
+    private String comments;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "updated_at")
     private Date updatedAt;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
     private Date createdAt;
     private boolean active = true;
 
     public PostOperatoryAvaliation() {
+        consistency = Consistency.NORMAL;
+        ingestionCapacity = Periodicity.NORMAL;
+        appetite = Intensity.UNCHANGED;
+        weight = Intensity.UNCHANGED;
+        dysphagia = Periodicity.NORMAL;
+        pyrosis = Periodicity.NORMAL;
+        diarrhea = Periodicity.NORMAL;
+        abdominalPain = Periodicity.NORMAL;
+        vomit = Periodicity.NORMAL;
+        fulness = Periodicity.NORMAL;
+        dumping = Periodicity.NORMAL;
+        totalScore = 0;
+        comments = "";
     }
 
     public PostOperatoryAvaliation(Patient patient) {
+        this();
         this.patient = patient;
     }
-    
+
     public long getId() {
         return id;
     }
@@ -195,7 +246,7 @@ public class PostOperatoryAvaliation implements SaveOrUpdateListener {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
     @Override
     public String toString() {
         return "{"
